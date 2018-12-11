@@ -13,6 +13,7 @@ import br.com.modelagemconceitual.DAO.CidadeDAO;
 import br.com.modelagemconceitual.DAO.ClienteDAO;
 import br.com.modelagemconceitual.DAO.EnderecoDAO;
 import br.com.modelagemconceitual.DAO.EstadoDAO;
+import br.com.modelagemconceitual.DAO.ItemPedidoDAO;
 import br.com.modelagemconceitual.DAO.PagamentoDAO;
 import br.com.modelagemconceitual.DAO.PedidoDAO;
 import br.com.modelagemconceitual.DAO.ProdutoDAO;
@@ -21,6 +22,7 @@ import br.com.modelagemconceitual.domain.Cidade;
 import br.com.modelagemconceitual.domain.Cliente;
 import br.com.modelagemconceitual.domain.Endereco;
 import br.com.modelagemconceitual.domain.Estado;
+import br.com.modelagemconceitual.domain.ItemPedido;
 import br.com.modelagemconceitual.domain.Pagamento;
 import br.com.modelagemconceitual.domain.PagamentoComBoleto;
 import br.com.modelagemconceitual.domain.PagamentoComCartao;
@@ -48,6 +50,8 @@ public class ModelagemConceitualApplication implements CommandLineRunner{
 	private PedidoDAO pedidoDAO;
 	@Autowired
 	private PagamentoDAO pagamentoDAO;
+	@Autowired
+	private ItemPedidoDAO itemPedidoDAO;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(ModelagemConceitualApplication.class, args);
@@ -102,6 +106,18 @@ public class ModelagemConceitualApplication implements CommandLineRunner{
 		
 		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
 		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped1.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		
 		categoriaDAO.saveAll(Arrays.asList(cat1, cat2));
 		produtoDAO.saveAll(Arrays.asList(p1, p2, p3));
 		
@@ -113,6 +129,8 @@ public class ModelagemConceitualApplication implements CommandLineRunner{
 		
 		pedidoDAO.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoDAO.saveAll(Arrays.asList(pagto1, pagto2));
+		
+		itemPedidoDAO.saveAll(Arrays.asList(ip1, ip2, ip3));
 		
 	}
 }
