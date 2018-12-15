@@ -24,5 +24,10 @@ public class CategoriaService {
 		categoria.setId(null);
 		return catDao.save(categoria);
 	}
+
+	public Categoria alterar(Categoria categoria) {
+		buscar(categoria.getId());
+		return catDao.save(categoria);
+	}
 	
 }
