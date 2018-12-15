@@ -20,4 +20,9 @@ public class CategoriaService {
 				+ ", tipo: " + Categoria.class.getName()));
 	}
 	
+	public Categoria salvar(Categoria categoria) {
+		categoria.setId(null);
+		return catDao.save(categoria);
+	}
+	
 }
