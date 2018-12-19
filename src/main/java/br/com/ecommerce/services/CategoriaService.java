@@ -1,6 +1,6 @@
 package br.com.ecommerce.services;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,6 +20,10 @@ public class CategoriaService {
 	public Categoria buscar(Integer id) {		
 		return catDao.findById(id).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! id: " + id
 				+ ", tipo: " + Categoria.class.getName()));
+	}
+	
+	public List<Categoria> buscarTodos() {		
+		return catDao.findAll();
 	}
 	
 	public Categoria salvar(Categoria categoria) {

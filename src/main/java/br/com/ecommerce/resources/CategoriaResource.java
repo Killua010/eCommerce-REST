@@ -1,6 +1,8 @@
 package br.com.ecommerce.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.ecommerce.domain.Categoria;
+import br.com.ecommerce.dto.CategoriaDTO;
 import br.com.ecommerce.services.CategoriaService;
 
 @RestController
@@ -44,6 +47,12 @@ public class CategoriaResource {
 	public ResponseEntity<Void> deletar(@PathVariable Integer id) {
 		categoriaService.deletar(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> buscarTodos() {
+		List<CategoriaDTO> listDto = categoriaService.buscarTodos().stream().map(cat -> new CategoriaDTO(cat)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 }
