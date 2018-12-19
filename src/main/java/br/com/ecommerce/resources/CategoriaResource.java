@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -52,6 +54,17 @@ public class CategoriaResource {
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<List<CategoriaDTO>> buscarTodos() {
 		List<CategoriaDTO> listDto = categoriaService.buscarTodos().stream().map(cat -> new CategoriaDTO(cat)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
+	}
+	
+	@RequestMapping(value="/paginado", method=RequestMethod.GET)
+	public ResponseEntity<Page<CategoriaDTO>> buscarPaginado(
+			@RequestParam(value="numPagina", defaultValue="0") Integer numPagina, 
+			@RequestParam(value="linhasPorPaginas", defaultValue="24") Integer linhasPorPaginas, 
+			@RequestParam(value="ordenarPor", defaultValue="nome") String ordenarPor, 
+			@RequestParam(value="direcaoParaOrdenar", defaultValue="ASC") String direcaoParaOrdenar) {
+		Page<CategoriaDTO> listDto = categoriaService.buscarPagina(numPagina, linhasPorPaginas, ordenarPor, direcaoParaOrdenar)
+				.map(cat -> new CategoriaDTO(cat));
 		return ResponseEntity.ok().body(listDto);
 	}
 	
