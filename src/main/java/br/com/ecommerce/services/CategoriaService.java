@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.ecommerce.DAO.CategoriaDAO;
 import br.com.ecommerce.domain.Categoria;
+import br.com.ecommerce.dto.CategoriaDTO;
 import br.com.ecommerce.services.exceptions.DataIntegrityException;
 import br.com.ecommerce.services.exceptions.ObjectNotFoundException;
 
@@ -52,6 +53,10 @@ public class CategoriaService {
 		// prepara as informações para a consulta
 		PageRequest pageRequest = PageRequest.of(numPagina, linhasPorPaginas, Direction.valueOf(direcaoParaOrdenar), ordenarPor);
 		return catDao.findAll(pageRequest);
+	}
+	
+	public Categoria fromDTO(CategoriaDTO dto) {
+		return new Categoria(dto.getId(), dto.getNome());
 	}
 	
 }
