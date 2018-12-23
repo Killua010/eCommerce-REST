@@ -19,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.dto.ClienteDTO;
+import br.com.ecommerce.dto.ClienteNovoDTO;
 import br.com.ecommerce.services.ClienteService;
 
 @RestController
@@ -34,13 +35,13 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(ClienteService.buscar(id));
 	}
 	
-	/*@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<Void> salvar(@Valid @RequestBody ClienteDTO ClienteDto){
-		Cliente Cliente =  ClienteService.fromDTO(ClienteDto);
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity<Void> salvar(@Valid @RequestBody ClienteNovoDTO clienteNovoDTO){
+		Cliente Cliente =  ClienteService.fromDTO(clienteNovoDTO);
 		Cliente = ClienteService.salvar(Cliente);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(Cliente.getId()).toUri();
 		return ResponseEntity.created(uri).build();
-	}*/
+	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
 	public ResponseEntity<Void> alterar(@Valid @RequestBody ClienteDTO ClienteDto, @PathVariable Integer id){
