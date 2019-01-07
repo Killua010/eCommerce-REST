@@ -29,6 +29,7 @@ import br.com.ecommerce.domain.PagamentoComCartao;
 import br.com.ecommerce.domain.Pedido;
 import br.com.ecommerce.domain.Produto;
 import br.com.ecommerce.domain.enums.EstadoPagamento;
+import br.com.ecommerce.domain.enums.Perfil;
 import br.com.ecommerce.domain.enums.TipoCliente;
 
 @Service
@@ -104,13 +105,18 @@ public class DBService {
 		Cidade c3 = new Cidade(null, "Campinas", est2);
 		
 		Cliente cli1 = new Cliente(null, "Maria Silva", "daniel160598@hotmail.com", "36378912377", TipoCliente.PESSOAFISICA, pe.encode("123"));
+		Cliente cli2 = new Cliente(null, "Ana Costa", "daniel16059817@gmail.com", "03726824057", TipoCliente.PESSOAFISICA, pe.encode("123"));
+		cli2.addPerfil(Perfil.ADMIN);
 		
 		cli1.getTelefones().addAll(Arrays.asList("27363323","93838393"));
+		cli2.getTelefones().addAll(Arrays.asList("85363323","99538393"));
 		
 		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", cli1, c1);
 		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+		Endereco e3 = new Endereco(null, "Avenida Floriano", "2106", null, "Centro", "25877012", cli2, c2);
 		
-		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));	
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		cli2.getEnderecos().addAll(Arrays.asList(e3));
 		
 		est1.getCidades().addAll(Arrays.asList(c1));
 		est2.getCidades().addAll(Arrays.asList(c2, c3));
@@ -146,8 +152,8 @@ public class DBService {
 		estadoDAO.saveAll(Arrays.asList(est1, est2));
 		cidadeDAO.saveAll(Arrays.asList(c1, c2, c3));
 		
-		clienteDAO.saveAll(Arrays.asList(cli1));
-		enderecoDAO.saveAll(Arrays.asList(e1, e2));
+		clienteDAO.saveAll(Arrays.asList(cli1, cli2));
+		enderecoDAO.saveAll(Arrays.asList(e1, e2, e3));
 		
 		pedidoDAO.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoDAO.saveAll(Arrays.asList(pagto1, pagto2));
