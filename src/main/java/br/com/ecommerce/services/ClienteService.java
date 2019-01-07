@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.ecommerce.DAO.ClienteDAO;
@@ -30,6 +31,9 @@ public class ClienteService {
 	
 	@Autowired
 	private EnderecoDAO enderecoDAO;
+	
+	@Autowired
+	private BCryptPasswordEncoder pe;
 	
 	public Cliente buscar(Integer id) {		
 		return clieDao.findById(id).orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! id: " + id
@@ -70,11 +74,11 @@ public class ClienteService {
 	}
 	
 	public Cliente fromDTO(ClienteDTO dto) {
-		return new Cliente(dto.getId(), dto.getNome(), dto.getEmail(), null, null);
+		return new Cliente(dto.getId(), dto.getNome(), dto.getEmail(), null, null, null);
 	}
 	
 	public Cliente fromDTO(ClienteNovoDTO dto) {
-		Cliente cliente =  new Cliente(null, dto.getNome(), dto.getEmail(), dto.getCpfOuCnpj(), TipoCliente.toEnum(dto.getTipoCliente()));
+		Cliente cliente =  new Cliente(null, dto.getNome(), dto.getEmail(), dto.getCpfOuCnpj(), TipoCliente.toEnum(dto.getTipoCliente()), pe.encode(dto.getSenha()));
 		Cidade cidade = new Cidade(dto.getCidadeId(), null, null);
 		Endereco endereco = new Endereco(null, dto.getLogradouro(), dto.getNumero(), dto.getComplemento(),
 				dto.getBairro(), dto.getCep(), cliente, cidade);
